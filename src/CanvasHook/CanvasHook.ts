@@ -1,9 +1,9 @@
 import React, { useRef, useEffect } from "react";
 
-const Canvas = (props: any) => {
-  const { draw, ...rest } = props;
+const useCanvas = (draw: any) => {
+  
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
+  
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -30,8 +30,8 @@ const Canvas = (props: any) => {
       window.cancelAnimationFrame(animationFrameId);
     }
   }, [draw]);
-
-  return <canvas ref={canvasRef} id="asteroids" width="400" height="400" {...rest} />
+  
+  return canvasRef
 }
 
-export default Canvas;
+export default useCanvas

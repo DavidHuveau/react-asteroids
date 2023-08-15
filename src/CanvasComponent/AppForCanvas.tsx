@@ -1,8 +1,7 @@
-import React from 'react';
-import Canvas from './Canvas';
+import React from "react";
+import Canvas from "./Canvas";
 
 function AppForCanvas() {
-
   const draw = (ctx: CanvasRenderingContext2D, frameCount: number): void => {
     // ctx.strokeStyle = '#ffffff';
     // ctx.lineWidth = 5;

@@ -1,6 +1,7 @@
-import React from 'react';
-import './App.css';
-import AppForCanvas from './CanvasComponent/AppForCanvas';
+import React from "react";
+import "./App.css";
+// import AppForCanvas from "./CanvasComponent/AppForCanvas";
+import AppForCanvas from "./CanvasHook/AppForCanvas";
 
 function App() {
   return <div className="App">
