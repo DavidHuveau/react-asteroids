@@ -1,14 +1,18 @@
 import React, { useRef, useEffect } from "react";
 
-const useCanvas = (draw: any) => {
-  
+type Options = {
+  context?: string;
+  preDraw?: (ctx: RenderingContext) => void;
+}
+
+const useCanvas = (draw: any, options?: Options) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext(options?.context || "2d");
     if (!context) return;
 
     // draw(context);
@@ -18,6 +22,7 @@ const useCanvas = (draw: any) => {
     
     const render = () => {
       frameCount++;
+      options?.preDraw && options.preDraw(context);
       draw(context, frameCount);
       // update an animation right before the next repaint
       // take callback as an argument to be invoked before the repaint
