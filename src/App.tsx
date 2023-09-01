@@ -1,7 +1,8 @@
 import React from "react";
 import "./App.css";
 // import AppForCanvas from "./CanvasComponent/AppForCanvas";
-import AppForCanvas from "./CanvasHook/AppForCanvas";
+// import AppForCanvas from "./CanvasHook/AppForCanvas";
+import SpaceShip from "./Exercices/SpaceShip";
 
 function App() {
   return <div className="App">
@@ -9,7 +10,8 @@ function App() {
       header
     </header>
     <main>
-      <AppForCanvas />
+      {/* <AppForCanvas /> */}
+      <SpaceShip />
     </main>
   </div>
 }

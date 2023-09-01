@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, ElementRef } from "react";
 
 type Options = {
   context?: string;
@@ -6,7 +6,7 @@ type Options = {
 }
 
 const useCanvas = (draw: any, options?: Options) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<ElementRef<"canvas">>(null);
   
   useEffect(() => {
     const canvas = canvasRef.current;

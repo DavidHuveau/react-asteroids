@@ -3,10 +3,6 @@ import Canvas from "./Canvas";
 
 function AppForCanvas() {
   const draw = (ctx: CanvasRenderingContext2D, frameCount: number): void => {
-    // ctx.strokeStyle = '#ffffff';
-    // ctx.lineWidth = 5;
-    // ctx.strokeRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.fillStyle = '#ffffff';
     ctx.beginPath();
