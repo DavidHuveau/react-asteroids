@@ -9,14 +9,14 @@ type drawShipOptions = {
   angle?: number;
 }
 
-const drawShip = (ctx: CanvasRenderingContext2D, x: number, y: number, radius: number, options: drawShipOptions = {}): void =>{
+const drawShip = (ctx: CanvasRenderingContext2D, radius: number, options: drawShipOptions = {}): void =>{
   ctx.save();
   if(options.guide) {
     ctx.strokeStyle = "white";
     ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
     ctx.lineWidth = 0.5;
     ctx.beginPath();
-    ctx.arc(x, y, radius, 0, 2 * Math.PI);
+    ctx.arc(0, 0, radius, 0, 2 * Math.PI);
     ctx.stroke();
     ctx.fill();
   }
@@ -25,14 +25,14 @@ const drawShip = (ctx: CanvasRenderingContext2D, x: number, y: number, radius: n
   ctx.fillStyle = options.fill || "black";
   const angle = (options.angle || 0.5 * Math.PI) / 2;
   ctx.beginPath();
-  ctx.moveTo(x + radius, y);
+  ctx.moveTo(radius, 0);
   ctx.lineTo(
-    x + Math.cos(Math.PI - angle) * radius,
-    y + Math.sin(Math.PI - angle) * radius
+    Math.cos(Math.PI - angle) * radius,
+    Math.sin(Math.PI - angle) * radius
   );
   ctx.lineTo(
-    x + Math.cos(Math.PI + angle) * radius,
-    y + Math.sin(Math.PI + angle) * radius
+    Math.cos(Math.PI + angle) * radius,
+    Math.sin(Math.PI + angle) * radius
   );
   ctx.closePath();
   ctx.fill();
@@ -41,8 +41,30 @@ const drawShip = (ctx: CanvasRenderingContext2D, x: number, y: number, radius: n
 };
 
 const draw = (ctx: CanvasRenderingContext2D, frameCount: number): void => {
-  drawShip(ctx, 50, 50, 50);
-  drawShip(ctx, 50, 150, 40, { guide: true, lineWidth: 1, stroke: "blue", angle: (0.3 * Math.PI) });
+  let x = 50;
+  let y = 50;
+  let angle = 0;
+
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+  drawShip(ctx, 40);
+  ctx.restore();
+
+  y = 150;
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+  drawShip(ctx, 40, { guide: true, lineWidth: 1, stroke: "blue", angle: (0.3 * Math.PI) });
+  ctx.restore();
+
+  y = 250;
+  angle = Math.PI * 0.25;
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+  drawShip(ctx, 40);
+  ctx.restore();
 };
 
 const preDraw = (ctx: CanvasRenderingContext2D): void => {
