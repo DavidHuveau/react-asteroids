@@ -2,7 +2,8 @@ import React from "react";
 import "./App.css";
 // import AppForCanvas from "./CanvasComponent/AppForCanvas";
 // import AppForCanvas from "./CanvasHook/AppForCanvas";
-import SpaceShip from "./Exercices/SpaceShip";
+// import SpaceShip from "./Exercices/SpaceShip";
+import Asteroid from "./Exercices/Asteroid";
 
 function App() {
   return <div className="App">
@@ -11,7 +12,8 @@ function App() {
     </header>
     <main>
       {/* <AppForCanvas /> */}
-      <SpaceShip />
+      {/* <SpaceShip /> */}
+      <Asteroid />
     </main>
   </div>
 }
