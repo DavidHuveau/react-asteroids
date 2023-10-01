@@ -6,6 +6,7 @@ type drawAsteroidOptions = {
   lineWidth?: number;
   stroke?: string;
   fill?: string;
+  noise?: number;
 }
 
 const drawAsteroid = (ctx: CanvasRenderingContext2D, radius: number, segementsNumber: number, options: drawAsteroidOptions = {} ): void => {
@@ -27,7 +28,7 @@ const drawAsteroid = (ctx: CanvasRenderingContext2D, radius: number, segementsNu
   ctx.beginPath();
   for (let index = 0; index < segementsNumber; index++) {
     ctx.rotate(2 * Math.PI / segementsNumber);
-    ctx.lineTo(radius, 0);
+    ctx.lineTo(radius + radius * (options.noise || 0.4) * (Math.random() - 0.5) , 0);
   }
   ctx.closePath();
   ctx.fill();
@@ -48,7 +49,7 @@ const draw = (ctx: CanvasRenderingContext2D, frameCount: number): void => {
   y = 200;
   ctx.save();
   ctx.translate(x, y);
-  drawAsteroid(ctx, 50, 9, { guide: true });
+  drawAsteroid(ctx, 50, 15, { guide: true, noise: 0.2 });
   ctx.restore();
 };
 
@@ -61,7 +62,7 @@ const options = {
 };
 
 function Asteroid(props: any) {
-  return <Canvas id="asteroids" width="400" height="400" draw={draw} options={options} preDraw={preDraw}/>
+  return <Canvas id="asteroids" width="400" height="400" draw={draw} options={options} preDraw={preDraw} animation={false}/>
 }
 
 export default Asteroid;
