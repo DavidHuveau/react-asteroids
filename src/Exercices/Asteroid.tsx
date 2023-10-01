@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Canvas from "../CanvasHook/Canvas";
+
+const ASTEROID_RADIUS = 50;
 
 type drawAsteroidOptions = {
   guide?: boolean;
@@ -9,7 +11,7 @@ type drawAsteroidOptions = {
   noise?: number;
 }
 
-const drawAsteroid = (ctx: CanvasRenderingContext2D, radius: number, segementsNumber: number, options: drawAsteroidOptions = {} ): void => {
+const drawAsteroid = (ctx: CanvasRenderingContext2D, radius: number, shape: number[], options: drawAsteroidOptions = {} ): void => {
   ctx.save();
   
   if(options.guide) {
@@ -26,30 +28,14 @@ const drawAsteroid = (ctx: CanvasRenderingContext2D, radius: number, segementsNu
   ctx.fillStyle = options.fill || "black";
 
   ctx.beginPath();
-  for (let index = 0; index < segementsNumber; index++) {
-    ctx.rotate(2 * Math.PI / segementsNumber);
-    ctx.lineTo(radius + radius * (options.noise || 0.4) * (Math.random() - 0.5) , 0);
+  for (let index = 0; index < shape.length; index++) {
+    ctx.rotate(2 * Math.PI / shape.length);
+    ctx.lineTo(radius + radius * (options.noise || 0.4) * shape[index] , 0);
   }
   ctx.closePath();
   ctx.fill();
   ctx.stroke();
 
-  ctx.restore();
-};
-
-const draw = (ctx: CanvasRenderingContext2D, frameCount: number): void => {
-  let x = 75;
-  let y = 75;
-
-  ctx.save();
-  ctx.translate(x, y);
-  drawAsteroid(ctx, 50, 5);
-  ctx.restore();
-
-  y = 200;
-  ctx.save();
-  ctx.translate(x, y);
-  drawAsteroid(ctx, 50, 15, { guide: true, noise: 0.2 });
   ctx.restore();
 };
 
@@ -62,6 +48,40 @@ const options = {
 };
 
 function Asteroid(props: any) {
+  const [ asteroidShapes, setAsteroidShapes ] = useState<any>([]);
+
+  useEffect(() => {
+    const segmentsNumbers = [15, 9];
+    const initialAsteroidShapes = [];
+
+    for (let index = 0; index < 2; index++) {
+      let newShape = [];
+      for (let segment = 0; segment < segmentsNumbers[index]; segment++) {
+        newShape.push(Math.random() - 0.5);
+      }
+      initialAsteroidShapes.push(newShape);
+    }
+    setAsteroidShapes(initialAsteroidShapes);
+  }, []);
+
+  const draw = (ctx: CanvasRenderingContext2D, frameCount: number): void => {
+    if (asteroidShapes.length === 0) return;
+
+    let x = 75;
+    let y = 75;
+  
+    ctx.save();
+    ctx.translate(x, y);
+    drawAsteroid(ctx, ASTEROID_RADIUS, asteroidShapes[0]);
+    ctx.restore();
+  
+    y = 200;
+    ctx.save();
+    ctx.translate(x, y);
+    drawAsteroid(ctx, ASTEROID_RADIUS, asteroidShapes[1], { guide: true, noise: 0.2 });
+    ctx.restore();
+  };
+
   return <Canvas id="asteroids" width="400" height="400" draw={draw} options={options} preDraw={preDraw} animation={false}/>
 }
 
