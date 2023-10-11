@@ -63,7 +63,7 @@ function DrawWithClasses(props: any) {
     preDraw={preDraw}
     draw={draw}
     options={{context: "2d"}}
-    animation={true}
+    animation={false}
     />
 }
 
