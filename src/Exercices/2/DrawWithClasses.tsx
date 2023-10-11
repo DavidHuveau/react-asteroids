@@ -41,7 +41,12 @@ function DrawWithClasses(props: any) {
     setStarShips([spaceShip1, spaceShip2, spaceShip3]);
   }, []);
 
-  const draw = (ctx: CanvasRenderingContext2D, frameCount: number): void => {
+  const update = (elapsedSeconds: number): void => {
+  };
+
+  const draw = (ctx: CanvasRenderingContext2D, elapsedSeconds: number): void => {
+    update(elapsedSeconds);
+
     asteroids.forEach(asteroid => {
       asteroid.draw(ctx, true);
     });
@@ -58,7 +63,7 @@ function DrawWithClasses(props: any) {
     preDraw={preDraw}
     draw={draw}
     options={{context: "2d"}}
-    animation={false}
+    animation={true}
     />
 }
 

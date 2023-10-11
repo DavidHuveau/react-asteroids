@@ -17,24 +17,28 @@ const useCanvas = (draw: any, options?: Options) => {
     if (!context) return;
 
     if (options?.animation) {
-      let frameCount = 0;
+      let previous: number;
+      let elapsed: number;
       let animationFrameId: number;
       
-      const render = () => {
-        frameCount++;
+      const frame = (timestamp: number) => {
         options?.preDraw && options.preDraw(context);
-        draw(context, frameCount);
+        
+        if (!previous) previous = timestamp;
+        elapsed = timestamp - previous;
+        draw(context, elapsed / 1000);
         // update an animation right before the next repaint
         // take callback as an argument to be invoked before the repaint
-        animationFrameId = window.requestAnimationFrame(render);
+        animationFrameId = window.requestAnimationFrame(frame);
       }
-      render()
+      animationFrameId = window.requestAnimationFrame(frame);
       
       return () => {
         // cancel the refresh callback request
         window.cancelAnimationFrame(animationFrameId);
       }
     } else {
+      options?.preDraw && options.preDraw(context);
       draw(context);
     }
   }, [draw]);
