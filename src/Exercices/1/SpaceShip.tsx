@@ -1,5 +1,5 @@
 import React from "react";
-import Canvas from "../CanvasHook/Canvas";
+import Canvas from "../../CanvasHook/Canvas";
 
 type drawShipOptions = {
   guide?: boolean;

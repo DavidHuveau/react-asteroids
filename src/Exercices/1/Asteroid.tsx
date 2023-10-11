@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Canvas from "../CanvasHook/Canvas";
+import Canvas from "../../CanvasHook/Canvas";
 
 const ASTEROID_RADIUS = 50;
 
