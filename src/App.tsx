@@ -4,7 +4,8 @@ import "./App.css";
 // import AppForCanvas from "./CanvasHook/AppForCanvas";
 // import SpaceShip from "./Exercices/1/SpaceShip";
 // import Asteroid from "./Exercices/1/Asteroid";
-import DrawWithClasses from "./Exercices/2/DrawWithClasses";
+// import DrawWithClasses from "./Exercices/2/DrawWithClasses";
+import AnimateDrawing from "./Exercices/3/AnimateDrawing";
 
 function App() {
   return <div className="App">
@@ -15,7 +16,8 @@ function App() {
       {/* <AppForCanvas /> */}
       {/* <SpaceShip /> */}
       {/* <Asteroid /> */}
-      <DrawWithClasses />
+      {/* <DrawWithClasses /> */}
+      <AnimateDrawing />
     </main>
   </div>
 }

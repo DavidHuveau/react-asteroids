@@ -27,6 +27,8 @@ const useCanvas = (draw: any, options?: Options) => {
         if (!previous) previous = timestamp;
         elapsed = timestamp - previous;
         draw(context, elapsed / 1000);
+        previous = timestamp;
+        
         // update an animation right before the next repaint
         // take callback as an argument to be invoked before the repaint
         animationFrameId = window.requestAnimationFrame(frame);
