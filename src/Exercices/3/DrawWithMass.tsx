@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Canvas from "../../CanvasHook/Canvas";
 import AsteroidClass from "./classes/Asteroid";
 import SpaceShipClass from "./classes/SpaceShip";
+import MassClass from "./classes/Mass";
 
 const CANVAS_WIDTH = 400;
 const CANVAS_HEIGHT = 400;
@@ -13,6 +14,7 @@ const preDraw = (ctx: CanvasRenderingContext2D): void => {
 function AnimateDrawing(props: any) {
   const [ asteroids, setAsteroids ] = useState<AsteroidClass[]>([]);
   const [ starShips, setStarShips ] = useState<SpaceShipClass[]>([]);
+  const [ masses, setMasses ] = useState<MassClass[]>([]);
 
   useEffect(() => {
     let x = 300;
@@ -51,24 +53,42 @@ function AnimateDrawing(props: any) {
       triangleAngle: 0.5 * Math.PI,
       triangleCurve2: 0.2,
     });
-    // setStarShips([spaceShip1, spaceShip2, spaceShip3]);
+    setStarShips([spaceShip1, spaceShip2, spaceShip3]);
+
+    // Mass test
+    const mass = 1, radius =  10, xSpeed = 0, ySpeed = 0, rotationSpeed = 0;
+    x = CANVAS_WIDTH / 2;
+    y = CANVAS_HEIGHT / 2;
+    angle = 0;
+    const mass1 = new MassClass(CANVAS_WIDTH, CANVAS_HEIGHT, mass, radius, x, y, angle, xSpeed, ySpeed, rotationSpeed)
+    mass1.twist(Math.PI, 2);
+    mass1.push(0.7 * Math.PI, 10, 10);
+    setMasses([mass1]);
   }, []);
 
   const update = (elapsed: number): void => {
-    asteroids.forEach(asteroid => {
-      asteroid.update(elapsed);
+    // asteroids.forEach(asteroid => {
+    //   asteroid.update(elapsed);
+    // });
+
+    masses.forEach(mass => {
+      mass.update(elapsed);
     });
   };
 
   const draw = (ctx: CanvasRenderingContext2D, elapsed: number): void => {
     update(elapsed);
 
-    asteroids.forEach(asteroid => {
-      asteroid.draw(ctx, true);
-    });
+    // asteroids.forEach(asteroid => {
+    //   asteroid.draw(ctx, true);
+    // });
 
-    starShips.forEach(starShip => {
-      starShip.draw(ctx, true);
+    // starShips.forEach(starShip => {
+    //   starShip.draw(ctx, true);
+    // });
+
+    masses.forEach(mass => {
+      mass.draw(ctx);
     });
   };
 

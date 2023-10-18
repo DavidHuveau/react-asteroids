@@ -32,7 +32,7 @@ class SpaceShip {
     this.triangleCurve2 = options?.triangleCurve2 || 0.75;
   }
 
-  draw(ctx: CanvasRenderingContext2D, guide: boolean, frameCount?: number): void {
+  draw(ctx: CanvasRenderingContext2D, guide: boolean): void {
     ctx.save();
     ctx.translate(this.x, this.y);
     ctx.rotate(this.angle);

@@ -5,7 +5,7 @@ import "./App.css";
 // import SpaceShip from "./Exercices/1/SpaceShip";
 // import Asteroid from "./Exercices/1/Asteroid";
 // import DrawWithClasses from "./Exercices/2/DrawWithClasses";
-import AnimateDrawing from "./Exercices/3/AnimateDrawing";
+import DrawWithMass from "./Exercices/3/DrawWithMass";
 
 function App() {
   return <div className="App">
@@ -17,7 +17,7 @@ function App() {
       {/* <SpaceShip /> */}
       {/* <Asteroid /> */}
       {/* <DrawWithClasses /> */}
-      <AnimateDrawing />
+      <DrawWithMass />
     </main>
   </div>
 }
