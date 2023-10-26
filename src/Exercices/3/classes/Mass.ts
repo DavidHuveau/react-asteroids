@@ -1,38 +1,26 @@
 class Mass {
-  private canvasWidth: number;
-  private canvasHeight: number;
-  private mass: number;
-  private radius: number;
-  private x: number;
-  private y: number;
-  private angle: number;
-  private xSpeed: number; // px/sec
-  private ySpeed: number; // px/sec
-  private rotationSpeed: number;
+  readonly canvasWidth: number;
+  readonly canvasHeight: number;
+  readonly mass: number;
+  readonly radius: number;
+  protected x: number;
+  protected y: number;
+  protected angle: number;
+  protected xSpeed: number; // px/sec
+  protected ySpeed: number; // px/sec
+  protected rotationSpeed: number;
 
   constructor(canvasWidth: number, canvasHeight: number, mass: number, radius: number, x: number, y: number, angle: number, xSpeed: number, ySpeed: number, rotationSpeed: number) {
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
-    this.mass = mass;
+    this.mass = mass || 1;
     this.radius = radius;
-    this.x = x;
-    this.y = y;
-    this.angle = angle;
-    this.xSpeed = xSpeed;
-    this.ySpeed = ySpeed;
-    this.rotationSpeed = rotationSpeed;
-  }
-
-  draw(ctx: CanvasRenderingContext2D): void {
-    ctx.save();
-    ctx.translate(this.x, this.y);
-    ctx.rotate(this.angle);
-    ctx.beginPath();
-    ctx.arc(0, 0, this.radius, 0, 2 * Math.PI);
-    ctx.lineTo(0, 0);
-    ctx.strokeStyle = "#FFFFFF";
-    ctx.stroke();
-    ctx.restore();
+    this.x = x || 0;
+    this.y = y || 0;
+    this.angle = angle || 0;
+    this.xSpeed = xSpeed || 0;
+    this.ySpeed = ySpeed || 0;
+    this.rotationSpeed = rotationSpeed || 0;
   }
 
   update(elapsed: number) {
