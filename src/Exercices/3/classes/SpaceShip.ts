@@ -1,14 +1,10 @@
 import { drawSpaceShipOptions } from "../types/drawSpaceShipOptions";
+import Mass from "./Mass";
 
-const SPACE_SHIP_RADIUS = 40;
+const SPACE_SHIP_RADIUS = 20;
+const MASS = 10;
 
-class SpaceShip {
-  private canvasWidth: number;
-  private canvasHeight: number;
-  private x: number;
-  private y: number;
-  private radius: number;
-  private angle: number;
+class SpaceShip extends Mass{
   private lineWidth: number;
   private stroke: string;
   private fillStyle: string;
@@ -17,13 +13,8 @@ class SpaceShip {
   private triangleCurve2: number;
 
   constructor(canvasWidth: number, canvasHeight: number, x: number, y: number, angle: number, options: drawSpaceShipOptions = {}) {
-    this.canvasWidth = canvasWidth;
-    this.canvasHeight = canvasHeight;
-    this.x = x;
-    this.y = y;
-    this.angle = angle;
-    
-    this.radius = options?.radius || SPACE_SHIP_RADIUS;
+    super(canvasWidth, canvasHeight, MASS, SPACE_SHIP_RADIUS, x, y, angle, 0, 0, 0);
+
     this.lineWidth = options?.lineWidth || 2;
     this.stroke = options?.stroke || "white";
     this.fillStyle = options?.fill || "black";

@@ -1,6 +1,4 @@
 export type drawSpaceShipOptions = {
-  guide?: boolean;
-  radius?: number;
   lineWidth?: number;
   stroke?: string;
   fill?: string;

@@ -37,25 +37,12 @@ function AnimateDrawing(props: any) {
 
     setAsteroids([asteroid1, asteroid2, asteroid3]);
 
-    x = 50;
-    y = 50;
-    let angle = Math.PI * 0.5;
+    x = CANVAS_WIDTH / 2;
+    y = CANVAS_HEIGHT / 2;
+    let angle = Math.PI * 1.5;
     const spaceShip1 = new SpaceShipClass(CANVAS_WIDTH, CANVAS_HEIGHT, x, y, angle)
       
-    y = 150;
-    angle = Math.PI * 1.5;
-    const spaceShip2 = new SpaceShipClass(CANVAS_WIDTH, CANVAS_HEIGHT, x, y, angle)
-      
-    y = 250;
-    angle = Math.PI * 1.25;
-    const spaceShip3 = new SpaceShipClass(CANVAS_WIDTH, CANVAS_HEIGHT, x, y, angle, {
-      guide: true,
-      lineWidth: 2,
-      stroke: "blue",
-      triangleAngle: 0.5 * Math.PI,
-      triangleCurve2: 0.2,
-    });
-    setStarShips([spaceShip1, spaceShip2, spaceShip3]);
+    setStarShips([spaceShip1]);
   }, []);
 
   const update = (elapsed: number): void => {
@@ -67,13 +54,13 @@ function AnimateDrawing(props: any) {
   const draw = (ctx: CanvasRenderingContext2D, elapsed: number): void => {
     update(elapsed);
 
-    asteroids.forEach(asteroid => {
-      asteroid.draw(ctx, true);
-    });
-
-    // starShips.forEach(starShip => {
-    //   starShip.draw(ctx, true);
+    // asteroids.forEach(asteroid => {
+    //   asteroid.draw(ctx, true);
     // });
+
+    starShips.forEach(starShip => {
+      starShip.draw(ctx, true);
+    });
   };
 
   return <Canvas
