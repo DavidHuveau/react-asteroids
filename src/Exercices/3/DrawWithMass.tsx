@@ -27,12 +27,13 @@ function AnimateDrawing(props: any) {
       stroke: "yellow",
     });
 
-    asteroid1.twist(Math.PI, 500);
-    asteroid2.twist(Math.PI, 500);
-    asteroid3.twist(Math.PI, 500);
-    asteroid1.push(0.7 * Math.PI, 1000, 60);
-    asteroid2.push(0.7 * Math.PI, 1000, 60);
-    asteroid3.push(0.7 * Math.PI, 1000, 60);
+    asteroid1.push(Math.random() * 2 * Math.PI, 2000, 60);
+    asteroid2.push(Math.random() * 2 * Math.PI, 2000, 60);
+    asteroid3.push(Math.random() * 2 * Math.PI, 2000, 60);
+
+    asteroid1.twist(Math.random() - 0.5 * Math.PI, 60);
+    asteroid2.twist(Math.random() - 0.5 * Math.PI, 60);
+    asteroid3.twist(Math.random() - 0.5 * Math.PI, 60);
 
     setAsteroids([asteroid1, asteroid2, asteroid3]);
 
