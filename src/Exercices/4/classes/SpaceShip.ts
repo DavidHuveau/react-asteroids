@@ -4,7 +4,7 @@ import Mass from "./Mass";
 const SPACE_SHIP_RADIUS = 20;
 const MASS = 10;
 
-class SpaceShip extends Mass{
+class SpaceShip extends Mass {
   private lineWidth: number;
   private stroke: string;
   private fillStyle: string;
@@ -12,9 +12,11 @@ class SpaceShip extends Mass{
   private triangleCurve1: number;
   private triangleCurve2: number;
   public thrusterOn: boolean;
+  private thrusterPower: number;
 
-  constructor(canvasWidth: number, canvasHeight: number, x: number, y: number, angle: number, options: drawSpaceShipOptions = {}) {
-    super(canvasWidth, canvasHeight, MASS, SPACE_SHIP_RADIUS, x, y, angle, 0, 0, 0);
+  constructor(canvasWidth: number, canvasHeight: number, x: number, y: number, power: number, options: drawSpaceShipOptions = {}) {
+
+    super(canvasWidth, canvasHeight, MASS, SPACE_SHIP_RADIUS, x, y, 1.5 * Math.PI, 0, 0, 0);
 
     this.lineWidth = options?.lineWidth || 2;
     this.stroke = options?.stroke || "white";
@@ -23,7 +25,8 @@ class SpaceShip extends Mass{
     this.triangleCurve1 = options?.triangleCurve1 || 0.25;
     this.triangleCurve2 = options?.triangleCurve2 || 0.75;
 
-    this.thrusterOn = false;
+    this.thrusterOn = options?.thrusterOn || false;
+    this.thrusterPower = power;
   }
 
   draw(ctx: CanvasRenderingContext2D, guide: boolean): void {
@@ -47,6 +50,25 @@ class SpaceShip extends Mass{
       ctx.fill();
     }
   
+    if(this.thrusterOn) {
+      ctx.save();
+      ctx.strokeStyle = "yellow";
+      ctx.fillStyle = "red";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(
+        Math.cos(Math.PI + this.angle * 0.8) * this.radius / 2,
+        Math.sin(Math.PI + this.angle * 0.8) * this.radius / 2
+      )
+      ctx.quadraticCurveTo(-this.radius * 2, 0,
+        Math.cos(Math.PI - this.angle * 0.8) * this.radius / 2,
+        Math.sin(Math.PI - this.angle * 0.8) * this.radius / 2
+      );
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
+
     ctx.lineWidth = this.lineWidth;
     ctx.strokeStyle = this.stroke;
     ctx.fillStyle = this.fillStyle;
@@ -112,6 +134,11 @@ class SpaceShip extends Mass{
       ctx.fill();
     }
     ctx.restore();
+  };
+
+  update(elapsed: number) {
+    this.push(this.angle, this.thrusterOn ? this.thrusterPower : 0, elapsed);
+    super.update(elapsed);
   };
 }
 

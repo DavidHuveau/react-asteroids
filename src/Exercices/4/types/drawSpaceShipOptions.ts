@@ -5,4 +5,5 @@ export type drawSpaceShipOptions = {
   triangleAngle?: number;
   triangleCurve1?: number;
   triangleCurve2?: number;
+  thrusterOn?: boolean;
 }

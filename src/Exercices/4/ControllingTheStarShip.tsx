@@ -40,9 +40,9 @@ function ControllingTheStarShip(props: any) {
 
     x = CANVAS_WIDTH / 2;
     y = CANVAS_HEIGHT / 2;
-    let angle = Math.PI * 1.5;
-    const spaceShip1 = new SpaceShipClass(CANVAS_WIDTH, CANVAS_HEIGHT, x, y, angle)
-      
+    const power = 1000;
+    const spaceShip1 = new SpaceShipClass(CANVAS_WIDTH, CANVAS_HEIGHT, x, y, power)
+
     setStarShip(spaceShip1);
   }, []);
 
