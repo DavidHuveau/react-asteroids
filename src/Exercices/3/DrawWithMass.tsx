@@ -46,9 +46,21 @@ function AnimateDrawing(props: any) {
   }, []);
 
   const update = (elapsed: number): void => {
-    asteroids.forEach(asteroid => {
-      asteroid.update(elapsed);
-    });
+    // if its nearly stopped, turn
+    if(Math.abs(starShips[0].speed()) < 15) {
+      starShips[0].angle += Math.PI * 2 * 0.01;
+    }
+    // If Its going fast, turn around to slow down
+    if(Math.abs(starShips[0].speed()) > 200) {
+      starShips[0].angle = starShips[0].movementAngle() + Math.PI;
+    }
+    // push in the direction its pointing (thrusters?)
+    starShips[0].push(starShips[0].angle, 1000, elapsed)
+    starShips[0].update(elapsed);
+
+    // asteroids.forEach(asteroid => {
+    //   asteroid.update(elapsed);
+    // });
   };
 
   const draw = (ctx: CanvasRenderingContext2D, elapsed: number): void => {

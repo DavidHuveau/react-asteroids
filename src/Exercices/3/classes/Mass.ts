@@ -5,7 +5,7 @@ class Mass {
   readonly radius: number;
   protected x: number;
   protected y: number;
-  protected angle: number;
+  angle: number;
   protected xSpeed: number; // px/sec
   protected ySpeed: number; // px/sec
   protected rotationSpeed: number;
