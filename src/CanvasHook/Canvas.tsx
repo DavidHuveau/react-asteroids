@@ -6,7 +6,8 @@ function Canvas(props: any) {
   const { context } = options;
   const canvasRef = useCanvas(draw, { context, preDraw, animation });
 
-  return <canvas ref={canvasRef} {...rest} />
+  // without tabindex, we can't set the focus on the canvas
+  return <canvas ref={canvasRef} tabIndex="1" {...rest} />
 }
 
 export default Canvas;

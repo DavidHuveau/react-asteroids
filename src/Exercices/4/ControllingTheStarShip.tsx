@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Canvas from "../../CanvasHook/Canvas";
 import AsteroidClass from "./classes/Asteroid";
 import SpaceShipClass from "./classes/SpaceShip";
+import "./style.css";
 
 const CANVAS_WIDTH = 400;
 const CANVAS_HEIGHT = 400;
@@ -10,9 +11,9 @@ const preDraw = (ctx: CanvasRenderingContext2D): void => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 };
 
-function DrawWithMass(props: any) {
+function ControllingTheStarShip(props: any) {
   const [ asteroids, setAsteroids ] = useState<AsteroidClass[]>([]);
-  const [ starShips, setStarShips ] = useState<SpaceShipClass[]>([]);
+  const [ starShip, setStarShip ] = useState<SpaceShipClass>();
 
   useEffect(() => {
     let x = 300;
@@ -42,21 +43,11 @@ function DrawWithMass(props: any) {
     let angle = Math.PI * 1.5;
     const spaceShip1 = new SpaceShipClass(CANVAS_WIDTH, CANVAS_HEIGHT, x, y, angle)
       
-    setStarShips([spaceShip1]);
+    setStarShip(spaceShip1);
   }, []);
 
   const update = (elapsed: number): void => {
-    // if its nearly stopped, turn
-    if(Math.abs(starShips[0].speed()) < 15) {
-      starShips[0].angle += Math.PI * 2 * 0.01;
-    }
-    // If Its going fast, turn around to slow down
-    if(Math.abs(starShips[0].speed()) > 200) {
-      starShips[0].angle = starShips[0].movementAngle() + Math.PI;
-    }
-    // push in the direction its pointing (thrusters?)
-    starShips[0].push(starShips[0].angle, 1000, elapsed)
-    starShips[0].update(elapsed);
+    starShip?.update(elapsed);
 
     // asteroids.forEach(asteroid => {
     //   asteroid.update(elapsed);
@@ -70,9 +61,7 @@ function DrawWithMass(props: any) {
     //   asteroid.draw(ctx, true);
     // });
 
-    starShips.forEach(starShip => {
-      starShip.draw(ctx, true);
-    });
+    starShip?.draw(ctx, true);
   };
 
   return <Canvas
@@ -86,4 +75,4 @@ function DrawWithMass(props: any) {
     />
 }
 
-export default DrawWithMass;
+export default ControllingTheStarShip;

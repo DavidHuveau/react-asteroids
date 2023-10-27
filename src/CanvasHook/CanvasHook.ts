@@ -2,6 +2,7 @@ import React, { useRef, useEffect, ElementRef } from "react";
 
 type Options = {
   context?: string;
+  initialize?: (ctx: RenderingContext) => void;
   preDraw?: (ctx: RenderingContext) => void;
   animation?: boolean;
 }
@@ -15,6 +16,8 @@ const useCanvas = (draw: any, options?: Options) => {
 
     const context = canvas.getContext(options?.context || "2d");
     if (!context) return;
+
+    options?.initialize && options.initialize(context);
 
     if (options?.animation) {
       let previous: number;
@@ -41,7 +44,7 @@ const useCanvas = (draw: any, options?: Options) => {
       }
     } else {
       options?.preDraw && options.preDraw(context);
-      draw(context);
+      draw(context, 0);
     }
   }, [draw]);
   
