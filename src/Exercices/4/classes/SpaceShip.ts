@@ -11,6 +11,7 @@ class SpaceShip extends Mass{
   private triangleAngle: number;
   private triangleCurve1: number;
   private triangleCurve2: number;
+  public thrusterOn: boolean;
 
   constructor(canvasWidth: number, canvasHeight: number, x: number, y: number, angle: number, options: drawSpaceShipOptions = {}) {
     super(canvasWidth, canvasHeight, MASS, SPACE_SHIP_RADIUS, x, y, angle, 0, 0, 0);
@@ -21,6 +22,8 @@ class SpaceShip extends Mass{
     this.triangleAngle = (options?.triangleAngle || 0.5 * Math.PI) / 2;
     this.triangleCurve1 = options?.triangleCurve1 || 0.25;
     this.triangleCurve2 = options?.triangleCurve2 || 0.75;
+
+    this.thrusterOn = false;
   }
 
   draw(ctx: CanvasRenderingContext2D, guide: boolean): void {

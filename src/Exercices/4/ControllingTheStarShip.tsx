@@ -46,8 +46,28 @@ function ControllingTheStarShip(props: any) {
     setStarShip(spaceShip1);
   }, []);
 
+  if (!starShip) return null;
+
+  const initialize = (ctx: CanvasRenderingContext2D): void => {
+    ctx.canvas.addEventListener("keydown", e => keydownHandler(e, true));
+    ctx.canvas.addEventListener("keyup", e => keydownHandler(e, false));
+    ctx.canvas.focus();
+  };
+
+  const keydownHandler = (e: KeyboardEvent, value: boolean) => {
+    let nothingHandled = false;
+    switch(e.key) {
+      case "ArrowUp":
+        starShip.thrusterOn = value;
+        break;
+      default:
+        nothingHandled = true;
+    }
+    if(!nothingHandled) e.preventDefault();
+  };
+
   const update = (elapsed: number): void => {
-    starShip?.update(elapsed);
+    starShip.update(elapsed);
 
     // asteroids.forEach(asteroid => {
     //   asteroid.update(elapsed);
@@ -61,16 +81,17 @@ function ControllingTheStarShip(props: any) {
     //   asteroid.draw(ctx, true);
     // });
 
-    starShip?.draw(ctx, true);
+    starShip.draw(ctx, true);
   };
 
   return <Canvas
     id="asteroids"
     width={CANVAS_WIDTH}
     height={CANVAS_HEIGHT}
+    initialize={initialize}
     preDraw={preDraw}
     draw={draw}
-    options={{context: "2d"}}
+    options={{ context: "2d" }}
     animation={true}
     />
 }
