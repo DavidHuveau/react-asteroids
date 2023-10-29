@@ -60,6 +60,12 @@ function ControllingTheStarShip(props: any) {
       case "ArrowUp":
         starShip.thrusterOn = value;
         break;
+      case "ArrowLeft":
+        starShip.leftThruster = value;
+        break;
+      case "ArrowRight":
+        starShip.rightThruster = value;
+        break;
       default:
         nothingHandled = true;
     }

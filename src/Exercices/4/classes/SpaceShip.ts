@@ -13,6 +13,9 @@ class SpaceShip extends Mass {
   private triangleCurve2: number;
   public thrusterOn: boolean;
   private thrusterPower: number;
+  private steeringPower: number;
+  public rightThruster: boolean;
+  public leftThruster: boolean;
 
   constructor(canvasWidth: number, canvasHeight: number, x: number, y: number, power: number, options: drawSpaceShipOptions = {}) {
 
@@ -27,6 +30,9 @@ class SpaceShip extends Mass {
 
     this.thrusterOn = options?.thrusterOn || false;
     this.thrusterPower = power;
+    this.steeringPower = this.thrusterPower / 20;
+    this.rightThruster = false;
+    this.leftThruster = false;
   }
 
   draw(ctx: CanvasRenderingContext2D, guide: boolean): void {
@@ -138,6 +144,8 @@ class SpaceShip extends Mass {
 
   update(elapsed: number) {
     this.push(this.angle, this.thrusterOn ? this.thrusterPower : 0, elapsed);
+    const force  = this.rightThruster ? 1 : (this.leftThruster ? -1 : 0)
+    this.twist(force * this.steeringPower, elapsed);
     super.update(elapsed);
   };
 }
