@@ -1,4 +1,5 @@
 export type drawAsteroidOptions = {
+  guide?: boolean;
   segmentsNumber?: number;
   lineWidth?: number;
   stroke?: string;
