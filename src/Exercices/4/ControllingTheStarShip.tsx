@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef } from "react";
 import Canvas from "../../CanvasHook/Canvas";
 import AsteroidClass from "./classes/Asteroid";
 import SpaceShipClass from "./classes/SpaceShip";
@@ -12,10 +12,19 @@ const preDraw = (ctx: CanvasRenderingContext2D): void => {
 };
 
 function ControllingTheStarShip(props: any) {
-  const [ asteroids, setAsteroids ] = useState<AsteroidClass[]>([]);
-  const [ starShip, setStarShip ] = useState<SpaceShipClass>();
+  const asteroids = useRef<AsteroidClass[]>([]);
+  const starShips = useRef<SpaceShipClass[]>([]);
 
-  useEffect(() => {
+  const initialize = (ctx: CanvasRenderingContext2D): void => {
+    console.log("initialize");
+    defineObjects();
+
+    ctx.canvas.addEventListener("keydown", e => keydownHandler(e, true));
+    ctx.canvas.addEventListener("keyup", e => keydownHandler(e, false));
+    ctx.canvas.focus();
+  };
+
+  const defineObjects = (): void => {
     let x = 300;
     let y = 75;
     const asteroid1 = new AsteroidClass(CANVAS_WIDTH, CANVAS_HEIGHT, 4000, x, y);
@@ -36,35 +45,27 @@ function ControllingTheStarShip(props: any) {
     asteroid2.twist(Math.random() - 0.5 * Math.PI, 60);
     asteroid3.twist(Math.random() - 0.5 * Math.PI, 60);
 
-    setAsteroids([asteroid1, asteroid2, asteroid3]);
+    asteroids.current = [asteroid1, asteroid2, asteroid3];
 
     x = CANVAS_WIDTH / 2;
     y = CANVAS_HEIGHT / 2;
     const power = 1000;
     const spaceShip1 = new SpaceShipClass(CANVAS_WIDTH, CANVAS_HEIGHT, x, y, power)
 
-    setStarShip(spaceShip1);
-  }, []);
-
-  if (!starShip) return null;
-
-  const initialize = (ctx: CanvasRenderingContext2D): void => {
-    ctx.canvas.addEventListener("keydown", e => keydownHandler(e, true));
-    ctx.canvas.addEventListener("keyup", e => keydownHandler(e, false));
-    ctx.canvas.focus();
-  };
+    starShips.current = [spaceShip1];
+  }
 
   const keydownHandler = (e: KeyboardEvent, value: boolean) => {
     let nothingHandled = false;
     switch(e.key) {
       case "ArrowUp":
-        starShip.thrusterOn = value;
+        starShips.current[0].thrusterOn = value;
         break;
       case "ArrowLeft":
-        starShip.leftThruster = value;
+        starShips.current[0].leftThruster = value;
         break;
       case "ArrowRight":
-        starShip.rightThruster = value;
+        starShips.current[0].rightThruster = value;
         break;
       default:
         nothingHandled = true;
@@ -73,21 +74,21 @@ function ControllingTheStarShip(props: any) {
   };
 
   const update = (elapsed: number): void => {
-    starShip.update(elapsed);
+    starShips.current[0].update(elapsed);
 
-    // asteroids.forEach(asteroid => {
-    //   asteroid.update(elapsed);
-    // });
+    asteroids.current.forEach(asteroid => {
+      asteroid.update(elapsed);
+    });
   };
 
   const draw = (ctx: CanvasRenderingContext2D, elapsed: number): void => {
     update(elapsed);
 
-    // asteroids.forEach(asteroid => {
-    //   asteroid.draw(ctx, true);
-    // });
+    asteroids.current.forEach(asteroid => {
+      asteroid.draw(ctx, true);
+    });
 
-    starShip.draw(ctx, true);
+    starShips.current[0].draw(ctx, true);
   };
 
   return <Canvas
