@@ -19,8 +19,8 @@ class SpaceShip extends Mass {
   private timeUntilWeaponReloaded: number;
   public retroOn: boolean;
 
-  constructor(canvasWidth: number, canvasHeight: number, x: number, y: number, power: number, weaponPower: number, options: drawSpaceShipOptions = {}) {
-    super(canvasWidth, canvasHeight, MASS, SPACE_SHIP_RADIUS, x, y, 1.5 * Math.PI, 0, 0, 0);
+  constructor(x: number, y: number, power: number, weaponPower: number, options: drawSpaceShipOptions = {}) {
+    super(MASS, SPACE_SHIP_RADIUS, x, y, 1.5 * Math.PI, 0, 0, 0);
 
     this.thrusterOn = options?.thrusterOn || false;
     this.thrusterPower = power;
@@ -46,7 +46,7 @@ class SpaceShip extends Mass {
     ctx.restore();
   }
 
-  update(elapsed: number) {
+  update(elapsed: number, ctx: CanvasRenderingContext2D) {
     const thrusterPower = (this.retroOn ? -1 : 1) * this.thrusterPower;
     this.push(this.angle, (this.thrusterOn || this.retroOn) ? thrusterPower : 0, elapsed);
     const force  = this.rightThruster ? 1 : (this.leftThruster ? -1 : 0)
@@ -57,16 +57,12 @@ class SpaceShip extends Mass {
       this.timeUntilWeaponReloaded -= Math.min(elapsed, this.timeUntilWeaponReloaded);
     }
 
-    super.update(elapsed);
+    super.update(elapsed, ctx);
   };
 
-  // todo: remove canvasWidth, canvasHeight in all function params
   projectile(elapsed: number): Projectile {
-
-    const canvasWidth = 400;
-    const canvasHeight = 400;
-    
-    const newProjectile = new Projectile(canvasWidth, canvasHeight, 0.025, 1,
+    const newProjectile = new Projectile(0.025,
+      1,
       this.x + Math.cos(this.angle) * this.radius,
       this.y + Math.sin(this.angle) * this.radius,
       this.xSpeed,

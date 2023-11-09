@@ -1,6 +1,4 @@
 class Mass {
-  readonly canvasWidth: number;
-  readonly canvasHeight: number;
   readonly mass: number;
   readonly radius: number;
   protected x: number;
@@ -10,9 +8,7 @@ class Mass {
   protected ySpeed: number; // px/sec
   protected rotationSpeed: number;
 
-  constructor(canvasWidth: number, canvasHeight: number, mass: number, radius: number, x: number, y: number, angle: number, xSpeed: number, ySpeed: number, rotationSpeed: number) {
-    this.canvasWidth = canvasWidth;
-    this.canvasHeight = canvasHeight;
+  constructor(mass: number, radius: number, x: number, y: number, angle: number, xSpeed: number, ySpeed: number, rotationSpeed: number) {
     this.mass = mass || 1;
     this.radius = radius;
     this.x = x || 0;
@@ -23,18 +19,18 @@ class Mass {
     this.rotationSpeed = rotationSpeed || 0;
   }
 
-  update(elapsed: number) {
-    if(this.x - this.radius + elapsed * this.xSpeed > this.canvasWidth) {
+  update(elapsed: number, ctx: CanvasRenderingContext2D) {
+    if(this.x - this.radius + elapsed * this.xSpeed > ctx.canvas.width) {
       this.x = -this.radius;
     }
     if(this.x + this.radius + elapsed * this.xSpeed < 0) {
-      this.x = this.canvasWidth + this.radius;
+      this.x = ctx.canvas.width + this.radius;
     }
-    if(this.y - this.radius + elapsed * this.ySpeed > this.canvasHeight) {
+    if(this.y - this.radius + elapsed * this.ySpeed > ctx.canvas.height) {
       this.y = -this.radius;
     }
     if(this.y + this.radius + elapsed * this.ySpeed < 0) {
-      this.y = this.canvasHeight + this.radius;
+      this.y = ctx.canvas.height + this.radius;
     }
     this.x += elapsed * this.xSpeed;
     this.y += elapsed * this.ySpeed;

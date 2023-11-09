@@ -8,9 +8,9 @@ class Asteroid extends Mass {
   private shape: number[] = [];
   private noise: number;
 
-  constructor(canvasWidth: number, canvasHeight: number, mass: number, x: number, y: number, options: drawAsteroidOptions = {}) {
+  constructor(mass: number, x: number, y: number, options: drawAsteroidOptions = {}) {
     const radius = Math.sqrt((mass / DENSITY) / Math.PI);
-    super(canvasWidth, canvasHeight, mass, radius, x, y, 0, 0, 0, 0);
+    super(mass, radius, x, y, 0, 0, 0, 0);
 
     this.noise = 0.2;
     const circumference = 2 * Math.PI * radius;
