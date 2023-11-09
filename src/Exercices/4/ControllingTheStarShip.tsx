@@ -73,9 +73,9 @@ function ControllingTheStarShip(props: any) {
       case " ":
         starShips.current[0].weaponTriggered = value;
         break;
-      // case "ArrowDown":
-      //   this.ship.retro_on = value;
-      //   break;
+      case "ArrowDown":
+        starShips.current[0].retroOn = value;
+        break;
       default:
         nothingHandled = true;
     }

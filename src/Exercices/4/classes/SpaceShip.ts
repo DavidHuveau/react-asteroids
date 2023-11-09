@@ -17,6 +17,7 @@ class SpaceShip extends Mass {
   private weaponPower: number;
   public weaponLoaded: boolean;
   private timeUntilWeaponReloaded: number;
+  public retroOn: boolean;
 
   constructor(canvasWidth: number, canvasHeight: number, x: number, y: number, power: number, weaponPower: number, options: drawSpaceShipOptions = {}) {
     super(canvasWidth, canvasHeight, MASS, SPACE_SHIP_RADIUS, x, y, 1.5 * Math.PI, 0, 0, 0);
@@ -26,6 +27,7 @@ class SpaceShip extends Mass {
     this.steeringPower = this.thrusterPower / 20;
     this.rightThruster = false;
     this.leftThruster = false;
+    this.retroOn = false;
 
     this.weaponPower = weaponPower;
     this.weaponTriggered = false;
@@ -45,7 +47,8 @@ class SpaceShip extends Mass {
   }
 
   update(elapsed: number) {
-    this.push(this.angle, this.thrusterOn ? this.thrusterPower : 0, elapsed);
+    const thrusterPower = (this.retroOn ? -1 : 1) * this.thrusterPower;
+    this.push(this.angle, (this.thrusterOn || this.retroOn) ? thrusterPower : 0, elapsed);
     const force  = this.rightThruster ? 1 : (this.leftThruster ? -1 : 0)
     this.twist(force * this.steeringPower, elapsed);
 
