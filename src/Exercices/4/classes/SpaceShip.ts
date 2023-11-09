@@ -1,9 +1,11 @@
 import { drawSpaceShipOptions } from "../types/drawSpaceShipOptions";
 import Mass from "./Mass";
+import Projectile from "./Projectile";
 import drawSpaceShip from "../drawing/drawSpaceShip";
 
 const SPACE_SHIP_RADIUS = 20;
 const MASS = 10;
+const WEAPON_RELOAD_TIME = 0.25; // seconds
 
 class SpaceShip extends Mass {
   public thrusterOn: boolean;
@@ -11,8 +13,12 @@ class SpaceShip extends Mass {
   private steeringPower: number;
   public rightThruster: boolean;
   public leftThruster: boolean;
+  public weaponTriggered: boolean;
+  private weaponPower: number;
+  public weaponLoaded: boolean;
+  private timeUntilWeaponReloaded: number;
 
-  constructor(canvasWidth: number, canvasHeight: number, x: number, y: number, power: number, options: drawSpaceShipOptions = {}) {
+  constructor(canvasWidth: number, canvasHeight: number, x: number, y: number, power: number, weaponPower: number, options: drawSpaceShipOptions = {}) {
     super(canvasWidth, canvasHeight, MASS, SPACE_SHIP_RADIUS, x, y, 1.5 * Math.PI, 0, 0, 0);
 
     this.thrusterOn = options?.thrusterOn || false;
@@ -20,6 +26,11 @@ class SpaceShip extends Mass {
     this.steeringPower = this.thrusterPower / 20;
     this.rightThruster = false;
     this.leftThruster = false;
+
+    this.weaponPower = weaponPower;
+    this.weaponTriggered = false;
+    this.weaponLoaded = false;
+    this.timeUntilWeaponReloaded = WEAPON_RELOAD_TIME;
   }
 
   draw(ctx: CanvasRenderingContext2D, guide: boolean): void {
@@ -37,8 +48,33 @@ class SpaceShip extends Mass {
     this.push(this.angle, this.thrusterOn ? this.thrusterPower : 0, elapsed);
     const force  = this.rightThruster ? 1 : (this.leftThruster ? -1 : 0)
     this.twist(force * this.steeringPower, elapsed);
+
+    this.weaponLoaded = this.timeUntilWeaponReloaded === 0;
+    if(!this.weaponLoaded) {
+      this.timeUntilWeaponReloaded -= Math.min(elapsed, this.timeUntilWeaponReloaded);
+    }
+
     super.update(elapsed);
   };
+
+  // todo: remove canvasWidth, canvasHeight in all function params
+  projectile(elapsed: number): Projectile {
+
+    const canvasWidth = 400;
+    const canvasHeight = 400;
+    
+    const newProjectile = new Projectile(canvasWidth, canvasHeight, 0.025, 1,
+      this.x + Math.cos(this.angle) * this.radius,
+      this.y + Math.sin(this.angle) * this.radius,
+      this.xSpeed,
+      this.ySpeed,
+      this.rotationSpeed
+    );
+    newProjectile.push(this.angle, this.weaponPower, elapsed);
+    this.push(this.angle + Math.PI, this.weaponPower, elapsed);
+    this.timeUntilWeaponReloaded = WEAPON_RELOAD_TIME;
+    return newProjectile;
+  }
 }
 
 export default SpaceShip;

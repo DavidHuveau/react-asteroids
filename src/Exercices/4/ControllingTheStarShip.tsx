@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import Canvas from "../../CanvasHook/Canvas";
 import AsteroidClass from "./classes/Asteroid";
 import SpaceShipClass from "./classes/SpaceShip";
+import ProjectileClass from "./classes/Projectile";
 import "./style.css";
 
 const CANVAS_WIDTH = 400;
@@ -14,6 +15,7 @@ const preDraw = (ctx: CanvasRenderingContext2D): void => {
 function ControllingTheStarShip(props: any) {
   const asteroids = useRef<AsteroidClass[]>([]);
   const starShips = useRef<SpaceShipClass[]>([]);
+  const projectiles = useRef<ProjectileClass[]>([]);
 
   const initialize = (ctx: CanvasRenderingContext2D): void => {
     console.log("initialize");
@@ -50,7 +52,8 @@ function ControllingTheStarShip(props: any) {
     x = CANVAS_WIDTH / 2;
     y = CANVAS_HEIGHT / 2;
     const power = 1000;
-    const spaceShip1 = new SpaceShipClass(CANVAS_WIDTH, CANVAS_HEIGHT, x, y, power)
+    const weaponPower = 200;
+    const spaceShip1 = new SpaceShipClass(CANVAS_WIDTH, CANVAS_HEIGHT, x, y, power, weaponPower)
 
     starShips.current = [spaceShip1];
   }
@@ -67,6 +70,12 @@ function ControllingTheStarShip(props: any) {
       case "ArrowRight":
         starShips.current[0].rightThruster = value;
         break;
+      case " ":
+        starShips.current[0].weaponTriggered = value;
+        break;
+      // case "ArrowDown":
+      //   this.ship.retro_on = value;
+      //   break;
       default:
         nothingHandled = true;
     }
@@ -79,6 +88,18 @@ function ControllingTheStarShip(props: any) {
     asteroids.current.forEach(asteroid => {
       asteroid.update(elapsed);
     });
+
+    projectiles.current.forEach((p, index, projectiles) => {
+      p.update(elapsed);
+      if(p.lifeLevel <= 0) {
+        projectiles.splice(index, 1);
+      }
+    });
+
+    // Ship's weapon must be loaded before it can be fired.
+    if(starShips.current[0].weaponTriggered && starShips.current[0].weaponLoaded) {
+      projectiles.current.push(starShips.current[0].projectile(elapsed));
+    }
   };
 
   const draw = (ctx: CanvasRenderingContext2D, elapsed: number): void => {
@@ -89,6 +110,10 @@ function ControllingTheStarShip(props: any) {
     });
 
     starShips.current[0].draw(ctx, true);
+
+    projectiles.current.forEach(projectile => {
+      projectile.draw(ctx);
+    });
   };
 
   return <Canvas
