@@ -19,11 +19,11 @@ class SpaceShip extends Mass {
   private timeUntilWeaponReloaded: number;
   public retroOn: boolean;
 
-  constructor(x: number, y: number, power: number, weaponPower: number, options: drawSpaceShipOptions = {}) {
+  constructor(x: number, y: number, thrusterPower: number, weaponPower: number, options: drawSpaceShipOptions = {}) {
     super(MASS, SPACE_SHIP_RADIUS, x, y, 1.5 * Math.PI, 0, 0, 0);
 
     this.thrusterOn = options?.thrusterOn || false;
-    this.thrusterPower = power;
+    this.thrusterPower = thrusterPower;
     this.steeringPower = this.thrusterPower / 20;
     this.rightThruster = false;
     this.leftThruster = false;
