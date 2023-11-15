@@ -2,8 +2,13 @@ import Asteroid from "./Asteroid";
 import SpaceShip from "./SpaceShip";
 import Projectile from "./Projectile";
 
-const THRUSTER_POWER = 1000;
-const WEAPON_POWER = 200;
+const ASTEROID_MASS = 5000;
+const ASTEROID_PUSH = 500000; // max force to apply in one frame
+
+const SPACE_SHIP_RADIUS = 15;
+const SPACE_SHIP_MASS = 10;
+const SPACE_SHIP_THRUSTER_POWER = 1000;
+const SPACE_SHIP_WEAPON_POWER = 200;
 
 class AsteroidsGame {
   private ctx: CanvasRenderingContext2D;
@@ -26,34 +31,40 @@ class AsteroidsGame {
   }
 
   createAsteroids(): Asteroid[] {
-    let x = 300;
-    let y = 75;
-    const asteroid1 = new Asteroid(4000, x, y);
-    y = 200;
-    const asteroid2 = new Asteroid(2000, x, y);
+    return [5, 2, 1].map(divisor => 
+      this.movingAsteroid(ASTEROID_MASS / divisor, 0.15)
+    )
+  }
 
-    y = 300;
-    const asteroid3 = new Asteroid(1000, x, y, {
-      noise: 0.4,
-      stroke: "yellow",
-    });
-
-    asteroid1.push(Math.random() * 2 * Math.PI, 2000, 60);
-    asteroid2.push(Math.random() * 2 * Math.PI, 2000, 60);
-    asteroid3.push(Math.random() * 2 * Math.PI, 2000, 60);
-
-    asteroid1.twist(Math.random() - 0.5 * Math.PI, 60);
-    asteroid2.twist(Math.random() - 0.5 * Math.PI, 60);
-    asteroid3.twist(Math.random() - 0.5 * Math.PI, 60);
-
-    return [asteroid1, asteroid2, asteroid3];
+  movingAsteroid(mass: number, elapsed: number): Asteroid {
+    const asteroid = new Asteroid(
+      mass,
+      this.ctx.canvas.width * Math.random(),
+      this.ctx.canvas.height * Math.random(),
+    );
+    this.pushAsteroid(asteroid, elapsed);
+    return asteroid;
+  }
+  
+  pushAsteroid(asteroid: Asteroid, elapsed: number): void {
+    asteroid.push(2 * Math.PI * Math.random(), ASTEROID_PUSH, elapsed);
+    asteroid.twist(
+      (Math.random() - 0.5) * Math.PI * ASTEROID_PUSH * 0.02,
+      elapsed
+    );
   }
 
   createStarShip(): SpaceShip {
     const x = this.ctx.canvas.width / 2;
     const y = this.ctx.canvas.height / 2;
-    const spaceShip = new SpaceShip(x, y, THRUSTER_POWER, WEAPON_POWER)
-    return spaceShip;
+    return new SpaceShip(
+      SPACE_SHIP_MASS,
+      SPACE_SHIP_RADIUS,
+      x,
+      y,
+      SPACE_SHIP_THRUSTER_POWER,
+      SPACE_SHIP_WEAPON_POWER
+    );
   }
 
   update(elapsed: number, ctx: CanvasRenderingContext2D): void {

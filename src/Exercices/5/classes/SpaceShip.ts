@@ -3,8 +3,6 @@ import Mass from "./Mass";
 import Projectile from "./Projectile";
 import drawSpaceShip from "../drawing/drawSpaceShip";
 
-const SPACE_SHIP_RADIUS = 20;
-const MASS = 10;
 const WEAPON_RELOAD_TIME = 0.25; // seconds
 
 class SpaceShip extends Mass {
@@ -18,9 +16,9 @@ class SpaceShip extends Mass {
   public weaponLoaded: boolean;
   private timeUntilWeaponReloaded: number;
   public retroOn: boolean;
-
-  constructor(x: number, y: number, thrusterPower: number, weaponPower: number, options: drawSpaceShipOptions = {}) {
-    super(MASS, SPACE_SHIP_RADIUS, x, y, 1.5 * Math.PI, 0, 0, 0);
+  
+  constructor(mass: number, radius: number, x: number, y: number, thrusterPower: number, weaponPower: number, options: drawSpaceShipOptions = {}) {
+    super(mass, radius, x, y, 1.5 * Math.PI, 0, 0, 0);
 
     this.thrusterOn = options?.thrusterOn || false;
     this.thrusterPower = thrusterPower;

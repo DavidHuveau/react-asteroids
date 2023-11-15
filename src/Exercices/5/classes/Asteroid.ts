@@ -27,7 +27,7 @@ class Asteroid extends Mass {
     ctx.rotate(this.angle);
     drawAsteroid(ctx, this.radius, this.shape, {
       noise: this.noise,
-      guide: guide
+      guide: guide,
     });
     ctx.restore();
   }
