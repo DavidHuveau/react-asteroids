@@ -15,6 +15,7 @@ class AsteroidsGame {
   private asteroids: Asteroid[];
   private starShip: SpaceShip;
   private projectiles: Projectile[];
+  private guide = false;
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.draw = this.draw.bind(this);
@@ -91,10 +92,10 @@ class AsteroidsGame {
     this.update(elapsed, ctx);
 
     this.asteroids.forEach(asteroid => {
-      asteroid.draw(ctx, true);
+      asteroid.draw(ctx, this.guide);
     });
 
-    this.starShip.draw(ctx, true);
+    this.starShip.draw(ctx, this.guide);
 
     this.projectiles.forEach(projectile => {
       projectile.draw(ctx);
@@ -118,6 +119,9 @@ class AsteroidsGame {
         break;
       case "ArrowDown":
         this.starShip.retroOn = value;
+        break;
+      case "g":
+        if(value) this.guide = !this.guide;
         break;
       default:
         nothingHandled = true;

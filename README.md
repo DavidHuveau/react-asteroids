@@ -5,6 +5,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 In the project directory, you can run:
 ### `yarn start`
 
+Sources:
+
 Canvas with React.js:
 https://medium.com/@pdx.lucasm/canvas-with-react-js-32e133c05258
 
