@@ -19,8 +19,8 @@ class SpaceShip extends Mass {
   private timeUntilWeaponReloaded: number;
   
   public compromised: boolean;
-  private maxHealth: number;
-  private health: number;
+  public maxHealth: number;
+  public health: number;
   
   constructor(mass: number, radius: number, x: number, y: number, thrusterPower: number, weaponPower: number, options: drawSpaceShipOptions = {}) {
     super(mass, radius, x, y, 1.5 * Math.PI, 0, 0, 0);
@@ -74,6 +74,9 @@ class SpaceShip extends Mass {
       this.timeUntilWeaponReloaded -= Math.min(elapsed, this.timeUntilWeaponReloaded);
     }
 
+    if(this.compromised) {
+      this.health -= Math.min(elapsed, this.health);
+    }
     super.update(elapsed, ctx);
   };
 

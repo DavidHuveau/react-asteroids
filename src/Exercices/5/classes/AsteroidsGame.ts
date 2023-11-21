@@ -1,6 +1,7 @@
 import Asteroid from "./Asteroid";
 import SpaceShip from "./SpaceShip";
 import Projectile from "./Projectile";
+import Indicator from "./Indicator";
 import drawLine from "../drawing/drawLine";
 
 const ASTEROID_MASS = 5000;
@@ -25,6 +26,7 @@ class AsteroidsGame {
   private starShip: SpaceShip;
   private projectiles: Projectile[];
   private guide: boolean;
+  private healthIndicator: Indicator;
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.draw = this.draw.bind(this);
@@ -35,6 +37,8 @@ class AsteroidsGame {
     this.starShip = this.createStarShip();
     this.projectiles = [];
     this.guide = true;
+
+    this.healthIndicator = new Indicator("health", 5, 5, 100, 10);
 
     ctx.canvas.addEventListener("keydown", e => this.keydownHandler(e, true));
     ctx.canvas.addEventListener("keyup", e => this.keydownHandler(e, false));
@@ -121,6 +125,8 @@ class AsteroidsGame {
     this.projectiles.forEach(projectile => {
       projectile.draw(ctx);
     });
+    
+    this.healthIndicator.draw(ctx, this.starShip.health, this.starShip.maxHealth);
   };
 
   keydownHandler(e: KeyboardEvent, value: boolean): void {
