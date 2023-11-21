@@ -1,6 +1,7 @@
 import Asteroid from "./Asteroid";
 import SpaceShip from "./SpaceShip";
 import Projectile from "./Projectile";
+import drawLine from "../drawing/drawLine";
 
 const ASTEROID_MASS = 5000;
 const ASTEROID_PUSH = 500000; // max force to apply in one frame
@@ -10,12 +11,20 @@ const SPACE_SHIP_MASS = 10;
 const SPACE_SHIP_THRUSTER_POWER = 1000;
 const SPACE_SHIP_WEAPON_POWER = 200;
 
+const collision = (obj1: any, obj2: any) => {
+  return distanceBetween(obj1, obj2) < (obj1.radius + obj2.radius);
+}
+
+const distanceBetween = (obj1: any, obj2: any) => {
+  return Math.sqrt(Math.pow(obj1.x - obj2.x, 2) + Math.pow(obj1.y - obj2.y, 2));
+}
+
 class AsteroidsGame {
   private ctx: CanvasRenderingContext2D;
   private asteroids: Asteroid[];
   private starShip: SpaceShip;
   private projectiles: Projectile[];
-  private guide = false;
+  private guide: boolean;
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.draw = this.draw.bind(this);
@@ -25,6 +34,7 @@ class AsteroidsGame {
     this.asteroids = this.createAsteroids();
     this.starShip = this.createStarShip();
     this.projectiles = [];
+    this.guide = true;
 
     ctx.canvas.addEventListener("keydown", e => this.keydownHandler(e, true));
     ctx.canvas.addEventListener("keyup", e => this.keydownHandler(e, false));
@@ -69,11 +79,16 @@ class AsteroidsGame {
   }
 
   update(elapsed: number, ctx: CanvasRenderingContext2D): void {
-    this.starShip.update(elapsed, ctx);
+    this.starShip.compromised = false;
 
     this.asteroids.forEach(asteroid => {
       asteroid.update(elapsed, ctx);
+      if(collision(asteroid, this.starShip)) {
+        this.starShip.compromised = true;
+      }
     });
+
+    this.starShip.update(elapsed, ctx);
 
     this.projectiles.forEach((p, index, projectiles) => {
       p.update(elapsed, ctx);
@@ -90,6 +105,12 @@ class AsteroidsGame {
 
   draw(ctx: CanvasRenderingContext2D, elapsed: number): void {
     this.update(elapsed, ctx);
+
+    if(this.guide) {
+      this.asteroids.forEach(asteroid =>  {
+        drawLine(ctx, asteroid, this.starShip);
+      }, this);
+    }
 
     this.asteroids.forEach(asteroid => {
       asteroid.draw(ctx, this.guide);

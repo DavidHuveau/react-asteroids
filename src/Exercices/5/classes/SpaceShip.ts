@@ -11,11 +11,16 @@ class SpaceShip extends Mass {
   private steeringPower: number;
   public rightThruster: boolean;
   public leftThruster: boolean;
+  public retroOn: boolean;
+
   public weaponTriggered: boolean;
   private weaponPower: number;
   public weaponLoaded: boolean;
   private timeUntilWeaponReloaded: number;
-  public retroOn: boolean;
+  
+  public compromised: boolean;
+  private maxHealth: number;
+  private health: number;
   
   constructor(mass: number, radius: number, x: number, y: number, thrusterPower: number, weaponPower: number, options: drawSpaceShipOptions = {}) {
     super(mass, radius, x, y, 1.5 * Math.PI, 0, 0, 0);
@@ -31,12 +36,26 @@ class SpaceShip extends Mass {
     this.weaponTriggered = false;
     this.weaponLoaded = false;
     this.timeUntilWeaponReloaded = WEAPON_RELOAD_TIME;
+
+    this.compromised = false;
+    this.maxHealth = 2.0;
+    this.health = this.maxHealth;
   }
 
   draw(ctx: CanvasRenderingContext2D, guide: boolean): void {
     ctx.save();
     ctx.translate(this.x, this.y);
     ctx.rotate(this.angle);
+
+    if(guide && this.compromised) {
+      ctx.save();
+      ctx.fillStyle = "red";
+      ctx.beginPath();
+      ctx.arc(0, 0, this.radius, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.restore();
+    }
+  
     drawSpaceShip(ctx, this.radius, {
       guide: guide,
       thrusterOn: this.thrusterOn
