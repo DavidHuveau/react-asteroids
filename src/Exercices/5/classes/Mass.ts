@@ -4,9 +4,9 @@ class Mass {
   protected x: number;
   protected y: number;
   protected angle: number;
-  protected xSpeed: number; // px/sec
-  protected ySpeed: number; // px/sec
-  protected rotationSpeed: number;
+  public xSpeed: number; // px/sec
+  public ySpeed: number; // px/sec
+  public rotationSpeed: number;
 
   constructor(mass: number, radius: number, x: number, y: number, angle: number, xSpeed: number, ySpeed: number, rotationSpeed: number) {
     this.mass = mass || 1;

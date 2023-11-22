@@ -6,6 +6,7 @@ import drawLine from "../drawing/drawLine";
 
 const ASTEROID_MASS = 5000;
 const ASTEROID_PUSH = 500000; // max force to apply in one frame
+const ASTEROID_MASS_DESTROYED = 500;
 
 const SPACE_SHIP_RADIUS = 15;
 const SPACE_SHIP_MASS = 10;
@@ -27,6 +28,7 @@ class AsteroidsGame {
   private projectiles: Projectile[];
   private guide: boolean;
   private healthIndicator: Indicator;
+  private score: number;
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.draw = this.draw.bind(this);
@@ -38,6 +40,7 @@ class AsteroidsGame {
     this.projectiles = [];
     this.guide = true;
 
+    this.score = 0;
     this.healthIndicator = new Indicator("health", 5, 5, 100, 10);
 
     ctx.canvas.addEventListener("keydown", e => this.keydownHandler(e, true));
@@ -94,10 +97,18 @@ class AsteroidsGame {
 
     this.starShip.update(elapsed, ctx);
 
-    this.projectiles.forEach((p, index, projectiles) => {
-      p.update(elapsed, ctx);
-      if(p.lifeLevel <= 0) {
-        projectiles.splice(index, 1);
+    this.projectiles.forEach((projectile, projectileIndex, projectiles) => {
+      projectile.update(elapsed, ctx);
+      if(projectile.lifeLevel <= 0) {
+        projectiles.splice(projectileIndex, 1);
+      } else {
+        this.asteroids.forEach((asteroid, asteroidIndex) => {
+          if(collision(asteroid, projectile)) {
+            projectiles.splice(projectileIndex, 1);
+            this.asteroids.splice(asteroidIndex, 1);
+            this.splitAsteroid(asteroid, elapsed);
+          }
+        });
       }
     });
 
@@ -128,6 +139,22 @@ class AsteroidsGame {
     
     this.healthIndicator.draw(ctx, this.starShip.health, this.starShip.maxHealth);
   };
+
+  splitAsteroid(asteroid: Asteroid, elapsed: number): void {
+    asteroid.mass -= ASTEROID_MASS_DESTROYED;
+    this.score += ASTEROID_MASS_DESTROYED;
+    const split = 0.25 + 0.5 * Math.random(); // split unevenly
+    const child1 = asteroid.child(asteroid.mass * split);
+    const child2 = asteroid.child(asteroid.mass * (1 - split));
+    [child1, child2].forEach((child: Asteroid) => {
+      if(child.mass < ASTEROID_MASS_DESTROYED) {
+        this.score += child.mass;
+      } else {
+        this.pushAsteroid(child, elapsed);
+        this.asteroids.push(child);
+      }
+    });
+  }
 
   keydownHandler(e: KeyboardEvent, value: boolean): void {
     let nothingHandled = false;
