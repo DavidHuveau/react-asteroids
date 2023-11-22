@@ -1,9 +1,9 @@
-class Indicator {
+class LevelIndicator {
   private label: string;
-  protected x: number;
-  protected y: number;
-  protected width: number;
-  protected height: number;
+  private x: number;
+  private y: number;
+  private width: number;
+  private height: number;
 
   constructor(label: string, x: number, y: number, width: number, height: number) {
     this.label = label;
@@ -30,5 +30,4 @@ class Indicator {
   }
 }
 
-
-export default Indicator;
+export default LevelIndicator;

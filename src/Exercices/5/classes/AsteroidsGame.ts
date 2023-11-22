@@ -1,7 +1,8 @@
 import Asteroid from "./Asteroid";
 import SpaceShip from "./SpaceShip";
 import Projectile from "./Projectile";
-import Indicator from "./Indicator";
+import LevelIndicator from "./LevelIndicator";
+import NumberIndicator from "./NumberIndicator";
 import drawLine from "../drawing/drawLine";
 
 const ASTEROID_MASS = 5000;
@@ -27,7 +28,9 @@ class AsteroidsGame {
   private starShip: SpaceShip;
   private projectiles: Projectile[];
   private guide: boolean;
-  private healthIndicator: Indicator;
+  private healthIndicator: LevelIndicator;
+  private scoreIndicator: NumberIndicator;
+  private fpsIndicator: NumberIndicator;
   private score: number;
 
   constructor(ctx: CanvasRenderingContext2D) {
@@ -41,7 +44,9 @@ class AsteroidsGame {
     this.guide = true;
 
     this.score = 0;
-    this.healthIndicator = new Indicator("health", 5, 5, 100, 10);
+    this.healthIndicator = new LevelIndicator("health", 5, 5, 100, 10);
+    this.scoreIndicator = new NumberIndicator("score", ctx.canvas.width - 10, 5);
+    this.fpsIndicator =  new NumberIndicator("fps", ctx.canvas.width - 10, ctx.canvas.height - 15, { digits: 2 });
 
     ctx.canvas.addEventListener("keydown", e => this.keydownHandler(e, true));
     ctx.canvas.addEventListener("keyup", e => this.keydownHandler(e, false));
@@ -138,6 +143,8 @@ class AsteroidsGame {
     });
     
     this.healthIndicator.draw(ctx, this.starShip.health, this.starShip.maxHealth);
+    this.scoreIndicator.draw(ctx, this.score);
+    this.fpsIndicator.draw(ctx, 1000 / (elapsed * 1000)); // elapsed is in sec
   };
 
   splitAsteroid(asteroid: Asteroid, elapsed: number): void {

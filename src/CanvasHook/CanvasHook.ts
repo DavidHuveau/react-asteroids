@@ -29,7 +29,7 @@ const useCanvas = (draw: any, options?: Options) => {
         
         if (!previous) previous = timestamp;
         elapsed = timestamp - previous;
-        draw(context, elapsed / 1000);
+        draw(context, elapsed / 1000); // msec -> sec
         previous = timestamp;
         
         // update an animation right before the next repaint
