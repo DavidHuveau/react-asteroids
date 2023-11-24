@@ -1,4 +1,4 @@
-export type drawAsteroidOptions = {
+export type DrawAsteroidOptions = {
   guide?: boolean;
   segmentsNumber?: number;
   lineWidth?: number;

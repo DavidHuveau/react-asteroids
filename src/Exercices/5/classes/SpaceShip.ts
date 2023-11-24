@@ -1,11 +1,11 @@
-import { drawSpaceShipOptions } from "../types/drawSpaceShipOptions";
+import { DrawSpaceShipOptions } from "../types/DrawSpaceShipOptions";
 import Mass from "./Mass";
 import Projectile from "./Projectile";
 import drawSpaceShip from "../drawing/drawSpaceShip";
 
 const WEAPON_RELOAD_TIME = 0.25; // seconds
 
-class SpaceShip extends Mass {
+export default class SpaceShip extends Mass {
   public thrusterOn: boolean;
   private thrusterPower: number;
   private steeringPower: number;
@@ -22,7 +22,7 @@ class SpaceShip extends Mass {
   public maxHealth: number;
   public health: number;
   
-  constructor(mass: number, radius: number, x: number, y: number, thrusterPower: number, weaponPower: number, options: drawSpaceShipOptions = {}) {
+  constructor(mass: number, radius: number, x: number, y: number, thrusterPower: number, weaponPower: number, options: DrawSpaceShipOptions = {}) {
     super(mass, radius, x, y, 1.5 * Math.PI, 0, 0, 0);
 
     this.thrusterOn = options?.thrusterOn || false;
@@ -95,5 +95,3 @@ class SpaceShip extends Mass {
     return newProjectile;
   }
 }
-
-export default SpaceShip;

@@ -3,7 +3,7 @@ import drawProjectile from "../drawing/drawProjectile";
 
 const DENSITY = 0.001; // low density means we can see very light projectiles
 
-class Projectile extends Mass {
+export default class Projectile extends Mass {
   private lifeTime: number;
   public lifeLevel: number;
 
@@ -27,5 +27,3 @@ class Projectile extends Mass {
     super.update(elapsed, ctx);
   }
 }
-
-export default Projectile;

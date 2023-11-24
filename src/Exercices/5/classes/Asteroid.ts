@@ -1,15 +1,15 @@
-import { drawAsteroidOptions } from "../types/drawAsteroidOptions";
+import { DrawAsteroidOptions } from "../types/DrawAsteroidOptions";
 import Mass from "./Mass";
 import drawAsteroid from "../drawing/drawAsteroid";
 
 const DENSITY = 1; // kg per square pixel
 const NOISE = 0.2;
 
-class Asteroid extends Mass {
+export default class Asteroid extends Mass {
   private shape: number[] = [];
   public mass: number;
 
-  constructor(mass: number, x: number, y: number, xSpeed: number = 0, ySpeed: number = 0, rotationSpeed: number = 0, options: drawAsteroidOptions = {}) {
+  constructor(mass: number, x: number, y: number, xSpeed: number = 0, ySpeed: number = 0, rotationSpeed: number = 0, options: DrawAsteroidOptions = {}) {
     const radius = Math.sqrt((mass / DENSITY) / Math.PI);
     super(mass, radius, x, y, 0, xSpeed, ySpeed, rotationSpeed);
 
@@ -45,5 +45,3 @@ class Asteroid extends Mass {
     );
   }
 }
-
-export default Asteroid;

@@ -1,4 +1,4 @@
-class LevelIndicator {
+export default class LevelIndicator {
   private label: string;
   private x: number;
   private y: number;
@@ -29,5 +29,3 @@ class LevelIndicator {
     ctx.restore()
   }
 }
-
-export default LevelIndicator;

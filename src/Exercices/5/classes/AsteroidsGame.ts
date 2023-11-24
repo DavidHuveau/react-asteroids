@@ -1,6 +1,7 @@
 import Asteroid from "./Asteroid";
 import SpaceShip from "./SpaceShip";
 import Projectile from "./Projectile";
+import Message from "./Message";
 import LevelIndicator from "./LevelIndicator";
 import NumberIndicator from "./NumberIndicator";
 import drawLine from "../drawing/drawLine";
@@ -22,7 +23,7 @@ const distanceBetween = (obj1: any, obj2: any) => {
   return Math.sqrt(Math.pow(obj1.x - obj2.x, 2) + Math.pow(obj1.y - obj2.y, 2));
 }
 
-class AsteroidsGame {
+export default class AsteroidsGame {
   private ctx: CanvasRenderingContext2D;
   private asteroids: Asteroid[];
   private starShip: SpaceShip;
@@ -31,35 +32,36 @@ class AsteroidsGame {
   private healthIndicator: LevelIndicator;
   private scoreIndicator: NumberIndicator;
   private fpsIndicator: NumberIndicator;
+  private message: Message;
   private score: number;
+  private gameOver: boolean;
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.draw = this.draw.bind(this);
     this.keydownHandler = this.keydownHandler.bind(this);
 
     this.ctx = ctx;
-    this.asteroids = this.createAsteroids();
-    this.starShip = this.createStarShip();
-    this.projectiles = [];
-    this.guide = true;
+    this.guide = false;
 
-    this.score = 0;
     this.healthIndicator = new LevelIndicator("health", 5, 5, 100, 10);
     this.scoreIndicator = new NumberIndicator("score", ctx.canvas.width - 10, 5);
     this.fpsIndicator =  new NumberIndicator("fps", ctx.canvas.width - 10, ctx.canvas.height - 15, { digits: 2 });
+    this.message = new Message(this.ctx.canvas.width / 2, this.ctx.canvas.height * 0.4);
 
     ctx.canvas.addEventListener("keydown", e => this.keydownHandler(e, true));
     ctx.canvas.addEventListener("keyup", e => this.keydownHandler(e, false));
     ctx.canvas.focus();
+
+    this.resetGame();
   }
 
-  createAsteroids(): Asteroid[] {
+  private createAsteroids(): Asteroid[] {
     return [5, 2, 1].map(divisor => 
       this.movingAsteroid(ASTEROID_MASS / divisor, 0.15)
     )
   }
 
-  movingAsteroid(mass: number, elapsed: number): Asteroid {
+  private movingAsteroid(mass: number, elapsed: number): Asteroid {
     const asteroid = new Asteroid(
       mass,
       this.ctx.canvas.width * Math.random(),
@@ -69,7 +71,7 @@ class AsteroidsGame {
     return asteroid;
   }
   
-  pushAsteroid(asteroid: Asteroid, elapsed: number): void {
+  private pushAsteroid(asteroid: Asteroid, elapsed: number): void {
     asteroid.push(2 * Math.PI * Math.random(), ASTEROID_PUSH, elapsed);
     asteroid.twist(
       (Math.random() - 0.5) * Math.PI * ASTEROID_PUSH * 0.02,
@@ -77,7 +79,7 @@ class AsteroidsGame {
     );
   }
 
-  createStarShip(): SpaceShip {
+  private createStarShip(): SpaceShip {
     const x = this.ctx.canvas.width / 2;
     const y = this.ctx.canvas.height / 2;
     return new SpaceShip(
@@ -90,7 +92,7 @@ class AsteroidsGame {
     );
   }
 
-  update(elapsed: number, ctx: CanvasRenderingContext2D): void {
+  private update(elapsed: number, ctx: CanvasRenderingContext2D): void {
     this.starShip.compromised = false;
 
     this.asteroids.forEach(asteroid => {
@@ -101,6 +103,10 @@ class AsteroidsGame {
     });
 
     this.starShip.update(elapsed, ctx);
+    if(this.starShip.health <= 0) {
+      this.gameOver = true;
+      return;
+    }
 
     this.projectiles.forEach((projectile, projectileIndex, projectiles) => {
       projectile.update(elapsed, ctx);
@@ -135,9 +141,13 @@ class AsteroidsGame {
     this.asteroids.forEach(asteroid => {
       asteroid.draw(ctx, this.guide);
     });
+    if(this.gameOver) {
+      this.message.draw(this.ctx, "GAME OVER", "Press space to play again");
+      return;
+    }
 
     this.starShip.draw(ctx, this.guide);
-
+    
     this.projectiles.forEach(projectile => {
       projectile.draw(ctx);
     });
@@ -147,7 +157,7 @@ class AsteroidsGame {
     this.fpsIndicator.draw(ctx, 1000 / (elapsed * 1000)); // elapsed is in sec
   };
 
-  splitAsteroid(asteroid: Asteroid, elapsed: number): void {
+  private splitAsteroid(asteroid: Asteroid, elapsed: number): void {
     asteroid.mass -= ASTEROID_MASS_DESTROYED;
     this.score += ASTEROID_MASS_DESTROYED;
     const split = 0.25 + 0.5 * Math.random(); // split unevenly
@@ -163,7 +173,7 @@ class AsteroidsGame {
     });
   }
 
-  keydownHandler(e: KeyboardEvent, value: boolean): void {
+  private keydownHandler(e: KeyboardEvent, value: boolean): void {
     let nothingHandled = false;
     switch(e.key) {
       case "ArrowUp":
@@ -176,7 +186,11 @@ class AsteroidsGame {
         this.starShip.rightThruster = value;
         break;
       case " ":
-        this.starShip.weaponTriggered = value;
+        if(this.gameOver) {
+          this.resetGame();
+        } else {
+          this.starShip.weaponTriggered = value;
+        }
         break;
       case "ArrowDown":
         this.starShip.retroOn = value;
@@ -188,7 +202,14 @@ class AsteroidsGame {
         nothingHandled = true;
     }
     if(!nothingHandled) e.preventDefault();
-  };
-}
+  }
 
-export default AsteroidsGame;
+  private resetGame() {
+    this.gameOver = false;
+    this.score = 0;
+
+    this.starShip = this.createStarShip();
+    this.projectiles = [];
+    this.asteroids = this.createAsteroids();
+  }
+}

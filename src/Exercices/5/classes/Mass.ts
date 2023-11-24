@@ -1,4 +1,4 @@
-class Mass {
+export default class Mass {
   readonly mass: number;
   readonly radius: number;
   protected x: number;
@@ -56,4 +56,3 @@ class Mass {
   }
 }
 
-export default Mass;

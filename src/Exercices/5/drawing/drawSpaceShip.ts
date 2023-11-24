@@ -1,6 +1,6 @@
-import { drawSpaceShipOptions } from "../types/drawSpaceShipOptions";
+import { DrawSpaceShipOptions } from "../types/DrawSpaceShipOptions";
 
-const drawSpaceShip = (ctx: CanvasRenderingContext2D, radius: number, options: drawSpaceShipOptions = {}): void => {
+const drawSpaceShip = (ctx: CanvasRenderingContext2D, radius: number, options: DrawSpaceShipOptions = {}): void => {
 
   const triangleAngle = (options?.triangleAngle || 0.5 * Math.PI) / 2;
   const triangleCurve1 = options?.triangleCurve1 || 0.25;

@@ -1,4 +1,4 @@
-export type drawSpaceShipOptions = {
+export type DrawSpaceShipOptions = {
   guide?: boolean;
   lineWidth?: number;
   stroke?: string;
