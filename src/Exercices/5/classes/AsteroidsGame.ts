@@ -6,7 +6,7 @@ import LevelIndicator from "./LevelIndicator";
 import NumberIndicator from "./NumberIndicator";
 import drawLine from "../drawing/drawLine";
 
-const ASTEROID_MASS = 5000;
+const ASTEROID_MAX_MASS = 5000;
 const ASTEROID_PUSH = 500000; // max force to apply in one frame
 const ASTEROID_MASS_DESTROYED = 500;
 
@@ -31,10 +31,12 @@ export default class AsteroidsGame {
   private guide: boolean;
   private healthIndicator: LevelIndicator;
   private scoreIndicator: NumberIndicator;
+  private levelIndicator: NumberIndicator;
   private fpsIndicator: NumberIndicator;
   private message: Message;
   private score: number;
   private gameOver: boolean;
+  private level: number;
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.draw = this.draw.bind(this);
@@ -45,6 +47,9 @@ export default class AsteroidsGame {
 
     this.healthIndicator = new LevelIndicator("health", 5, 5, 100, 10);
     this.scoreIndicator = new NumberIndicator("score", ctx.canvas.width - 10, 5);
+    this.levelIndicator = new NumberIndicator("level", ctx.canvas.width / 2, 5, {
+      align: "center"
+    });
     this.fpsIndicator =  new NumberIndicator("fps", ctx.canvas.width - 10, ctx.canvas.height - 15, { digits: 2 });
     this.message = new Message(this.ctx.canvas.width / 2, this.ctx.canvas.height * 0.4);
 
@@ -55,19 +60,15 @@ export default class AsteroidsGame {
     this.resetGame();
   }
 
-  private createAsteroids(): Asteroid[] {
-    return [5, 2, 1].map(divisor => 
-      this.movingAsteroid(ASTEROID_MASS / divisor, 0.15)
-    )
-  }
-
-  private movingAsteroid(mass: number, elapsed: number): Asteroid {
+  private createMovingAsteroid(): Asteroid {
+    // generate a mass between 1000 and 5000
+    const mass = Math.floor(ASTEROID_MAX_MASS / (Math.floor(Math.random() * 5) + 1));
     const asteroid = new Asteroid(
       mass,
       this.ctx.canvas.width * Math.random(),
       this.ctx.canvas.height * Math.random(),
     );
-    this.pushAsteroid(asteroid, elapsed);
+    this.pushAsteroid(asteroid, 0.15);
     return asteroid;
   }
   
@@ -93,6 +94,9 @@ export default class AsteroidsGame {
   }
 
   private update(elapsed: number, ctx: CanvasRenderingContext2D): void {
+    if(this.asteroids.length === 0) {
+      this.levelUp();
+    }
     this.starShip.compromised = false;
 
     this.asteroids.forEach(asteroid => {
@@ -154,6 +158,7 @@ export default class AsteroidsGame {
     
     this.healthIndicator.draw(ctx, this.starShip.health, this.starShip.maxHealth);
     this.scoreIndicator.draw(ctx, this.score);
+    this.levelIndicator.draw(ctx, this.level);
     this.fpsIndicator.draw(ctx, 1000 / (elapsed * 1000)); // elapsed is in sec
   };
 
@@ -207,9 +212,19 @@ export default class AsteroidsGame {
   private resetGame() {
     this.gameOver = false;
     this.score = 0;
+    this.level = 0;
 
     this.starShip = this.createStarShip();
     this.projectiles = [];
-    this.asteroids = this.createAsteroids();
+    this.asteroids = [];
+
+    this.levelUp();
+  }
+
+  private levelUp() {
+    this.level += 1;
+    for(let i = 0; i < this.level; i++) {
+      this.asteroids.push(this.createMovingAsteroid());
+    }
   }
 }
