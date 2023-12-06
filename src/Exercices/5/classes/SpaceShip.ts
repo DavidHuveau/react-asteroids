@@ -1,4 +1,3 @@
-// import { DrawSpaceShipOptions } from "../types/DrawSpaceShipOptions";
 import DrawSpaceShipOptions from "../types/DrawSpaceShipOptions";
 import Mass from "./Mass";
 import Projectile from "./Projectile";

@@ -1,4 +1,4 @@
-import { AlignType } from "../types/AlignType";
+import AlignType from "../types/AlignType";
 
 export default class NumberIndicator {
   private label: string;

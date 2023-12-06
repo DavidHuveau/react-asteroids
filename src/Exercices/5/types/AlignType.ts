@@ -1,1 +1,3 @@
-export type AlignType = "left" | "right" | "center" | "start" | "end";
+type AlignType = "left" | "right" | "center" | "start" | "end";
+
+export default AlignType;
