@@ -1,4 +1,4 @@
-import { DrawAsteroidOptions } from "../types/DrawAsteroidOptions";
+// import { DrawAsteroidOptions } from "../types/DrawAsteroidOptions";
 import Mass from "./Mass";
 import drawAsteroid from "../drawing/drawAsteroid";
 
@@ -9,7 +9,9 @@ export default class Asteroid extends Mass {
   private shape: number[] = [];
   public mass: number;
 
-  constructor(mass: number, x: number, y: number, xSpeed: number = 0, ySpeed: number = 0, rotationSpeed: number = 0, options: DrawAsteroidOptions = {}) {
+  // constructor(mass: number, x: number, y: number, xSpeed: number = 0, ySpeed: number = 0, rotationSpeed: number = 0, options: DrawA
+  constructor(mass: number, x: number, y: number, xSpeed: number = 0, ySpeed: number = 0, rotationSpeed: number = 0, options: any = {}) {
+    
     const radius = Math.sqrt((mass / DENSITY) / Math.PI);
     super(mass, radius, x, y, 0, xSpeed, ySpeed, rotationSpeed);
 
