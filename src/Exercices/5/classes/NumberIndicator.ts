@@ -1,5 +1,4 @@
 import TextAlign from "../types/textAlign";
-// type AlignType = "left" | "right" | "center" | "start" | "end";
 
 export default class NumberIndicator {
   private label: string;
