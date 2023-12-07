@@ -1,4 +1,4 @@
-import DrawAsteroidOptions from "../types/DrawAsteroidOptions";
+import DrawAsteroidOptions from "../types/drawAsteroidOptions";
 
 const drawAsteroid = (ctx: CanvasRenderingContext2D, radius: number, shape: number[], options: DrawAsteroidOptions = {}): void => {
   ctx.save();

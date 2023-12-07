@@ -1,7 +1,7 @@
-import DrawSpaceShipOptions from "../types/DrawSpaceShipOptions";
 import Mass from "./Mass";
 import Projectile from "./Projectile";
 import drawSpaceShip from "../drawing/drawSpaceShip";
+import DrawSpaceShipOptions from "../types/drawSpaceShipOptions";
 
 const WEAPON_RELOAD_TIME = 0.25; // seconds
 

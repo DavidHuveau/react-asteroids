@@ -1,4 +1,4 @@
-import DrawSpaceShipOptions from "../types/DrawSpaceShipOptions";
+import DrawSpaceShipOptions from "../types/drawSpaceShipOptions";
 
 const drawSpaceShip = (ctx: CanvasRenderingContext2D, radius: number, options: DrawSpaceShipOptions = {}): void => {
 

@@ -1,6 +1,6 @@
-import DrawAsteroidOptions from "../types/DrawAsteroidOptions";
 import Mass from "./Mass";
 import drawAsteroid from "../drawing/drawAsteroid";
+import DrawAsteroidOptions from "../types/drawAsteroidOptions";
 
 const DENSITY = 1; // kg per square pixel
 const NOISE = 0.2;
