@@ -1,4 +1,3 @@
-import React from "react";
 import Canvas from "./Canvas";
 
 const draw1 = (ctx: CanvasRenderingContext2D, frameCount: number): void => {

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import Canvas from "../../CanvasHook/Canvas";
 import AsteroidClass from "./classes/Asteroid";
 import SpaceShipClass from "./classes/SpaceShip";

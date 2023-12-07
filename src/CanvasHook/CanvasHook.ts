@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, ElementRef } from "react";
+import { useRef, useEffect, ElementRef } from "react";
 
 type Options = {
   context?: string;
@@ -46,7 +46,7 @@ const useCanvas = (draw: any, options?: Options) => {
       options?.preDraw && options.preDraw(context);
       draw(context, 0);
     }
-  }, [draw]);
+  }, [draw, options]);
   
   return canvasRef
 }

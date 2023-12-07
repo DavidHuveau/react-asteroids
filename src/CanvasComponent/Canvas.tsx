@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 
 const Canvas = (props: any) => {
   const { draw, ...rest } = props;
