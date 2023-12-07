@@ -1,4 +1,4 @@
-import AlignType from "../types/alignType";
+import TextAlign from "../types/textAlign";
 // type AlignType = "left" | "right" | "center" | "start" | "end";
 
 export default class Message {
@@ -6,7 +6,7 @@ export default class Message {
   private y: number;
   private mainPt: number;
   private subPt: number;
-  private textAlign: AlignType;
+  private textAlign: TextAlign;
   private fill: string;
 
   constructor(x: number, y: number, options: any = {}) {

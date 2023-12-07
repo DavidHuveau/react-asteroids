@@ -1,4 +1,4 @@
-import AlignType from "../types/alignType";
+import TextAlign from "../types/textAlign";
 // type AlignType = "left" | "right" | "center" | "start" | "end";
 
 export default class NumberIndicator {
@@ -7,7 +7,7 @@ export default class NumberIndicator {
   private y: number;
   private digits: number;
   private pt: number;
-  private textAlign: AlignType;
+  private textAlign: TextAlign;
 
   constructor(label: string, x: number, y: number, options: any = {}) {
     this.label = label + ": ";
