@@ -1,5 +1,6 @@
 import Canvas from "./CanvasHook/Canvas";
 import AsteroidsGame from "./classes/AsteroidsGame";
+import CanvasHookInitialization from "./types/canvasHookInitialization";
 import "./style.css";
 
 const CANVAS_WIDTH = 400;
@@ -11,7 +12,7 @@ const preDraw = (ctx: CanvasRenderingContext2D): void => {
 
 function ControllingTheStarShip() {
 
-  const initialize = (ctx: CanvasRenderingContext2D): any => {
+  const initialize = (ctx: CanvasRenderingContext2D): CanvasHookInitialization => {
     const game = new AsteroidsGame(ctx);
     return {
       preDraw: preDraw, 

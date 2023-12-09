@@ -1,7 +1,8 @@
 import { useRef, useEffect, ElementRef } from "react";
+import CanvasHookInitialization from "../types/canvasHookInitialization";
 
 type Options = {
-  initialize: (ctx: RenderingContext) => any;
+  initialize: (ctx: RenderingContext) => CanvasHookInitialization;
   animation?: boolean;
   contextType?: string;
 }
