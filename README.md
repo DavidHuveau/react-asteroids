@@ -5,6 +5,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 In the project directory, you can run:
 ### `yarn start`
 
+![Screen](https://github.com/DavidHuveau/react-asteroids/blob/main/asteroids-game.png)
+
 Sources:
 
 Canvas with React.js:
